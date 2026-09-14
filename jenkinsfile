@@ -1,0 +1,59 @@
+pipeline {
+
+```
+agent any
+
+stages {
+
+    stage('Checkout') {
+
+        steps {
+
+            echo '================================='
+            echo '   ETAPE 1 : CHECKOUT GIT'
+            echo '================================='
+
+            checkout scm
+        }
+    }
+
+
+    stage('Build Docker') {
+
+        steps {
+
+            echo '================================='
+            echo '   ETAPE 2 : BUILD DOCKER'
+            echo '================================='
+
+            sh 'docker compose build'
+        }
+    }
+
+
+    stage('Stop Old Container') {
+
+        steps {
+
+            echo '================================='
+            echo '   ETAPE 3 : STOP ANCIEN CONTAINER'
+            echo '================================='
+
+            sh 'docker compose down || true'
+        }
+    }
+
+
+    stage('Deploy') {
+
+        steps {
+
+            echo '================================='
+            echo '   ETAPE 4 : DEPLOY'
+            echo '================================='
+
+            sh 'docker compose up -d'
+        }
+    }
+
+}
